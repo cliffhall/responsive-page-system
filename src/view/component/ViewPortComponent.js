@@ -1,21 +1,22 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class ViewPortComponent
- *
  */
-
-puremvc.define({
-    name : 'rps.view.component.ViewPortComponent',
-    constructor : function(event) {
-    }
-}, {
+puremvc.define(
+{
+    name : 'rps.ViewPortComponent',
+    constructor : function(event) {}
+},
+               
+// INSTANCE MEMBERS
+{
     signals : {
         readySignal : new signals.Signal(),
         testSignal : new signals.Signal(),
         logSignal : new signals.Signal()
     },
-    handleEvent : function(event) {
+                
+    handleEvent : function( event ) {
         switch(event.type) {
             case 'click':
                 this.dispatchClick();
@@ -26,7 +27,8 @@ puremvc.define({
 
         }
     },
-    build : function(pageData) {
+               
+    build : function( pageData ) {
 
         // Identify component element
         var pgX = '<div class="pagesX" style="height:' + pageData.dimensions.height + 'px;width:' + pageData.items.length * pageData.dimensions.width + 'px;"></div>';
@@ -63,8 +65,9 @@ puremvc.define({
             };
         });
         this.redraw(pageData);
-        this.signals.readySignal.dispatch(rps.view.component.ViewPortComponent.SIGNAL_READY);
+        this.signals.readySignal.dispatch(rps.ViewPortComponent.SIGNAL_READY);
     },
+               
     maintainSelectedPage : function(pageData, selectedPageIndex) {
         $('.pagesX').css({
             marginLeft : -selectedPageIndex * pageData.dimensions.width + 'px'
@@ -73,6 +76,7 @@ puremvc.define({
             marginTop : -selectedPageIndex * pageData.dimensions.height + 'px'
         });
     },
+               
     redraw : function(pageData) {
         var vpY = 0, vpX = 0, vpLeft = 0;
         var pgstrX = '', pgstrY = '', bottomMarginHeight, contentHeight, contentYPos;
@@ -96,12 +100,6 @@ puremvc.define({
             top : pageData.contentConfig.topNavActivated ? pageData.dimensions.topNavHeight + 'px' : '0px',
             left : vpLeft + 'px'
         });
-
-        // $('.viewPort,.pagesX,.pagesY').css({
-        // width : pageData.dimensions.width + 'px',
-        // height : pageData.dimensions.height - vpY + 'px',
-        // top : pageData.contentConfig.topNavActivated ? pageData.dimensions.topNavHeight + 'px' : '0px'
-        // });
 
         $('.pagesX').css({
             width : pageData.items.length * pageData.dimensions.width + 'px',
@@ -132,7 +130,8 @@ puremvc.define({
         });
 
     },
-    gotoPage : function(pageData) {
+                
+    gotoPage : function( pageData ) {
         var nextPageIndex = jQuery.inArray(pageData.currentPage, pageData.items);
         var nextPositionX = nextPageIndex * pageData.dimensions.width;
         var nextPositionY = nextPageIndex * pageData.dimensions.height;
@@ -155,12 +154,9 @@ puremvc.define({
         }
     }
 },
-// STATIC MEMBERS
+               
+// CLASS MEMBERS
 {
-    /**
-     * @static
-     * @type {string}
-     */
-    NAME : 'ViewPortComponent',
-    SIGNAL_READY : 'readySignal',
+    NAME            : 'ViewPortComponent',
+    SIGNAL_READY    : 'readySignal',
 });

@@ -1,15 +1,15 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class TopNavComponent
- *
  */
+puremvc.define(
+{
+    name        : 'rps.TopNavComponent',
+    constructor : function( event ) {}
+},
 
-puremvc.define({
-    name : 'rps.view.component.TopNavComponent',
-    constructor : function(event) {
-    }
-}, {
+// INSTANCE MEMBERS
+{
     leftMenuToggled : false,
     topNavToggled : false,
     signals : {
@@ -22,7 +22,8 @@ puremvc.define({
         topNavHiddenSignal : new signals.Signal(),
         topNavShownSignal : new signals.Signal(),
     },
-    addBackButton : function(pageData) {
+               
+    addBackButton : function( pageData ) {
         var bb = '<div id="backButton" class="topNavButtonBack">&nbsp;</div>';
         var context = this;
 
@@ -33,12 +34,13 @@ puremvc.define({
 
             $(document).off(pageData.contentConfig.mainGesture, '.topNavButtonBack');
             $(document).on(pageData.contentConfig.mainGesture, '.topNavButtonBack', function() {
-                context.signals[rps.view.component.TopNavComponent.SIGNAL_BACK].dispatch(rps.view.component.TopNavComponent.SIGNAL_BACK);
+                context.signals[rps.TopNavComponent.SIGNAL_BACK].dispatch(rps.TopNavComponent.SIGNAL_BACK);
             });
 
             this.updateButtons(pageData);
         }
     },
+               
     addHomeButton : function(pageData) {
         var homeButton = '<div id="homeButton" class="topNavButtonHome">&nbsp;</div>';
         var context = this;
@@ -50,12 +52,13 @@ puremvc.define({
 
             $(document).off(pageData.contentConfig.mainGesture, '.topNavButtonHome');
             $(document).on(pageData.contentConfig.mainGesture, '.topNavButtonHome', function() {
-                context.signals[rps.view.component.TopNavComponent.SIGNAL_HOME].dispatch(rps.view.component.TopNavComponent.SIGNAL_HOME);
+                context.signals[rps.TopNavComponent.SIGNAL_HOME].dispatch(rps.TopNavComponent.SIGNAL_HOME);
             });
 
             this.updateButtons(pageData);
         }
     },
+               
     addMenuButton : function(pageData) {
         var menuButton = '<div id="menuButton" class="navButtonMenuTop">&nbsp;</div>';
         var target = this;
@@ -66,12 +69,13 @@ puremvc.define({
 
         $(document).off(pageData.contentConfig.mainGesture, '.navButtonMenuTop');
         $(document).on(pageData.contentConfig.mainGesture, '.navButtonMenuTop', function() {
-            target.signals[rps.view.component.TopNavComponent.SIGNAL_TOGGLE_MENU].dispatch(rps.view.component.TopNavComponent.SIGNAL_TOGGLE_MENU);
+            target.signals[rps.TopNavComponent.SIGNAL_TOGGLE_MENU].dispatch(rps.TopNavComponent.SIGNAL_TOGGLE_MENU);
             target.toggleMenuButtonStyle(pageData);
         });
 
         this.updateButtons(pageData);
     },
+               
     build : function(pageData) {
         var showTopNav = false;
         if (pageData.contentConfig.orientation == rps.AppConstants.LANDSCAPE_MODE)
@@ -85,24 +89,30 @@ puremvc.define({
         });
         delete pageData;
     },
+               
     getLeftMenuToggled : function() {
         return this.leftMenuToggled;
     },
+               
     removeBackButton : function(pageData) {
         $('.topNavButtonBack').remove();
         this.updateButtons(pageData);
     },
+               
     removeHomeButton : function(pageData) {
         $('.topNavButtonHome').remove();
         this.updateButtons(pageData);
     },
+               
     removeMenuButton : function(pageData) {
         $('.navButtonMenuTop').remove();
         this.updateButtons(pageData);
     },
+               
     setLeftMenuToggled : function(toggled) {
         this.leftMenuToggled = toggled;
     },
+               
     toggleLeftMenu : function(pageData) {
         var target = this;
         var animData = {
@@ -114,7 +124,7 @@ puremvc.define({
         if (!this.getLeftMenuToggled()) {
             
             // Tells menu view to turn on
-            target.signals[rps.view.component.TopNavComponent.SIGNAL_MENU_EXTENDED].dispatch(rps.view.component.TopNavComponent.SIGNAL_MENU_EXTENDED);
+            target.signals[rps.TopNavComponent.SIGNAL_MENU_EXTENDED].dispatch(rps.TopNavComponent.SIGNAL_MENU_EXTENDED);
             
             $('.leftNav').css({
                 width : '100px',
@@ -136,7 +146,7 @@ puremvc.define({
         } else {
             
             // Tells menu view to turn on
-            this.signals[rps.view.component.TopNavComponent.SIGNAL_MENU_RETRACTED].dispatch(rps.view.component.TopNavComponent.SIGNAL_MENU_RETRACTED);
+            this.signals[rps.TopNavComponent.SIGNAL_MENU_RETRACTED].dispatch(rps.TopNavComponent.SIGNAL_MENU_RETRACTED);
 
             $('.leftNav').css({
                 width : '0px',
@@ -157,6 +167,7 @@ puremvc.define({
         }
         delete pageData;
     },
+               
     toggleMenuButtonStyle: function(pageData) {
         var newCSS;
         if (pageData.contentConfig.menuActivated) {
@@ -176,6 +187,7 @@ puremvc.define({
         }
         $('.navButtonMenuTop').css(newCSS);        
     },
+               
     toggleTopNav : function(pageData) {
         var scope = this;
         
@@ -191,7 +203,7 @@ puremvc.define({
             if (this.topNavToggled) {
                 animData.complete = function() {
                     animData.complete = {};
-                    scope.signals.topNavHiddenSignal.dispatch(rps.view.component.TopNavComponent.SIGNAL_TOPNAV_HIDDEN);
+                    scope.signals.topNavHiddenSignal.dispatch(rps.TopNavComponent.SIGNAL_TOPNAV_HIDDEN);
                 };
 
                 $('.topNav').animate({
@@ -203,7 +215,7 @@ puremvc.define({
             if (!this.topNavToggled) {
 
                 animData.complete = function() {
-                    scope.signals.topNavHiddenSignal.dispatch(rps.view.component.TopNavComponent.SIGNAL_TOPNAV_SHOWN);
+                    scope.signals.topNavHiddenSignal.dispatch(rps.TopNavComponent.SIGNAL_TOPNAV_SHOWN);
                 };
 
                 $('.topNav').animate({
@@ -214,6 +226,7 @@ puremvc.define({
         }
         
     },
+               
     /**
      * All button-related updates (width and position) should happen here.
      * CSS classes should exist to do most of the work; here we're making 
@@ -254,7 +267,8 @@ puremvc.define({
         }
         delete pageData;
     },
-    redraw : function(pageData) {
+                
+    redraw : function( pageData ) {
         var left, target = this;
         var isLandscape = pageData.contentConfig.orientation == rps.AppConstants.LANDSCAPE_MODE;
         
@@ -285,7 +299,7 @@ puremvc.define({
             if (pageData.contentConfig.menuActivated) {
                 var animData = {};
                 animData.complete = function() {
-                    //targ.signals[rps.view.component.TopNavComponent.SIGNAL_MENU_EXTENDED].dispatch(rps.view.component.TopNavComponent.SIGNAL_MENU_EXTENDED);
+                    //targ.signals[rps.TopNavComponent.SIGNAL_MENU_EXTENDED].dispatch(rps.TopNavComponent.SIGNAL_MENU_EXTENDED);
                 };
     
                 $('.leftNav').animate({
@@ -306,19 +320,18 @@ puremvc.define({
         // Update button size and position
         this.updateButtons(pageData);
         this.toggleTopNav(pageData);
-    },
-}, {
-    /**
-     * @static
-     * @type {string}
-     */
-    NAME : 'TopNavComponent',
-    SIGNAL_BACK : 'backSignal',
-    SIGNAL_HOME : 'homeSignal',
-    SIGNAL_TOGGLE_DEBUG : 'toggleDebugSignal',
-    SIGNAL_TOGGLE_MENU : 'toggleMenuSignal',
-    SIGNAL_MENU_EXTENDED : 'menuExtendedSignal',
-    SIGNAL_MENU_RETRACTED : 'menuRetractedSignal',
-    SIGNAL_TOPNAV_HIDDEN : 'topNavHiddenSignal',
-    SIGNAL_TOPNAV_SHOWN : 'topNavShownSignal',
+    }
+},
+
+// CLASS MEMBERS
+{
+    NAME                    : 'TopNavComponent',
+    SIGNAL_BACK             : 'backSignal',
+    SIGNAL_HOME             : 'homeSignal',
+    SIGNAL_TOGGLE_DEBUG     : 'toggleDebugSignal',
+    SIGNAL_TOGGLE_MENU      : 'toggleMenuSignal',
+    SIGNAL_MENU_EXTENDED    : 'menuExtendedSignal',
+    SIGNAL_MENU_RETRACTED   : 'menuRetractedSignal',
+    SIGNAL_TOPNAV_HIDDEN    : 'topNavHiddenSignal',
+    SIGNAL_TOPNAV_SHOWN     : 'topNavShownSignal',
 });

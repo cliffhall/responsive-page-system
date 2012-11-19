@@ -1,29 +1,31 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class PageProxy
- *
  */
-
-puremvc.define({
-    name : 'rps.model.proxy.PageProxy',
-    parent : puremvc.Proxy
-}, {
+puremvc.define(
+{
+    name    : 'rps.PageProxy',
+    parent  : puremvc.Proxy
+},
+               
+// INSTANCE MEMBERS
+{
     /** @override */
     onRegister : function() {
         var targ = this;
-        $(window).resize(function() {
+        $(window).resize( function() {
             // Recalculate dimensions
             targ.data.dimensions.width = document.documentElement.clientWidth;
             targ.data.dimensions.height = document.documentElement.clientHeight;
             targ.data.contentConfig.orientation = targ.getAspectRatioMode();
-            targ.sendNotification(rps.AppConstants.NOTE_APP_RESIZE, targ.data);
+            targ.sendNotification( rps.AppConstants.NOTE_APP_RESIZE, targ.data );
         });
 
         window.addEventListener('orientationchange', function() {
-            // alert(document.documentElement.clientHeight);            targ.sendNotification(rps.AppConstants.NOTE_APP_RESIZE, targ.data);
+            targ.sendNotification( rps.AppConstants.NOTE_APP_RESIZE, targ.data );
         });
     },
+               
     /**
      * Mode can be portrait or landscape. 
      */
@@ -36,13 +38,16 @@ puremvc.define({
         }
         return mode;
     },
+               
     getCurrentIndex : function() {
-        return jQuery.inArray(this.getCurrentPage(), this.data.items);
+        return jQuery.inArray( this.getCurrentPage(), this.data.items );
     },
+               
     getCurrentPage : function() {
         return this.data.currentPage;
     },
-    setCurrentPage : function(pageID) {
+               
+    setCurrentPage : function( pageID ) {
         var target = this;
         $.each(this.data.items, function(index, item) {
             if (item.id == pageID) {
@@ -54,6 +59,7 @@ puremvc.define({
             }
         });
     },
+               
     /**
      * Get all pages in the site 
      */
@@ -126,6 +132,7 @@ puremvc.define({
 
         this.changePage();
     },
+               
     /**
      * Create a unique ID 
      */
@@ -140,34 +147,33 @@ puremvc.define({
         }
         return uuid;
     },
+               
     /**
      * Change the page on the model
      * @changeObj: Object - type: e.g. 'direction', 'home', 'back'.
      */
-    changePage : function(changeObj) {
+    changePage : function( changeObj ) {
         var target = this;
         // Scope
 
-        if (!changeObj) {
-            changeObj = {
-                type : rps.AppConstants.PAGE_CHANGE_ID,
-                val : this.data.items[0].id
-            };
+        if ( !changeObj ) {
+            changeObj = new rps.ChangeObject( rps.AppConstants.PAGE_CHANGE_ID, this.data.items[0].id );
         }
 
-        switch(changeObj.type) {
+        switch( changeObj.type ) {
+               
             case rps.AppConstants.PAGE_CHANGE_DIRECTION:
                 var nextIndex;
-                $.each(this.data.items, function(index, item) {
-                    if (item.id == target.getCurrentPage().id) {
-                        if (changeObj.val == rps.view.component.BottomNavComponent.SIGNAL_PREVIOUS) {
-                            if (index - 1 < 0) {
+                $.each(this.data.items, function( index, item ) {
+                    if ( item.id == target.getCurrentPage().id ) {
+                        if ( changeObj.val == rps.BottomNavComponent.SIGNAL_PREVIOUS ) {  // BAD!!! DON'T REFERENCE VIEW FROM MODEL!!!
+                            if ( index - 1 < 0 ) {
                                 nextIndex = target.data.items.length - 1;
                             } else {
                                 nextIndex = index - 1;
                             }
                         } else {
-                            if (index + 1 > target.data.items.length - 1) {
+                            if ( index + 1 > target.data.items.length - 1 ) {
                                 nextIndex = 0;
                             } else {
                                 nextIndex = index + 1;
@@ -175,42 +181,45 @@ puremvc.define({
                         }
                     }
                 });
-                this.setCurrentPage(this.data.items[nextIndex].id);
-                this.data.history.push(this.getCurrentPage());
+                this.setCurrentPage( this.data.items[nextIndex].id );
+                this.data.history.push( this.getCurrentPage() );
                 break;
+               
             case rps.AppConstants.PAGE_CHANGE_ID:
-                target.setCurrentPage(changeObj.val);
-                this.data.history.push(this.getCurrentPage());
+                target.setCurrentPage( changeObj.val );
+                this.data.history.push( this.getCurrentPage() );
                 break;
+               
             case rps.AppConstants.PAGE_CHANGE_HOME:
-                this.setCurrentPage(changeObj.val);
+                this.setCurrentPage( changeObj.val );
                 this.data.history = [];
-                this.data.history.push(this.getCurrentPage());
+                this.data.history.push( this.getCurrentPage() );
                 break;
+               
             case rps.AppConstants.PAGE_CHANGE_BACK:
-                this.data.history.splice(this.data.history.length - 1, 1);
-                this.setCurrentPage(this.data.history[this.data.history.length - 1].id);
+                this.data.history.splice( this.data.history.length - 1, 1 );
+                this.setCurrentPage( this.data.history[ this.data.history.length - 1 ].id );
                 break;
+               
             case rps.AppConstants.PAGE_CHANGE_TITLE:
-                $.each(this.data.items, function(index, item) {
-                    if (item.title == changeObj.val) {
-                        target.setCurrentPage(item.id);
+                $.each(this.data.items, function( index, item ) {
+                    if ( item.title == changeObj.val ) {
+                        target.setCurrentPage( item.id );
                     }
                 });
-                this.data.history.push(this.getCurrentPage());
+                this.data.history.push( this.getCurrentPage() );
                 break;
+               
             default:
                 console.log('Unsupported page direction passed to PageProxy::changePage');
                 break;
         }
-        this.sendNotification(rps.AppConstants.NOTE_PAGE_CHANGED, this.getData());
+               
+        this.sendNotification( rps.AppConstants.NOTE_PAGE_CHANGED, this.getData() );
     }
 },
+               
 // CLASS MEMBERS
 {
-    /**
-     * @static
-     * @type {string}
-     */
-    NAME : 'PageProxy'
+    NAME                : 'PageProxy'
 });

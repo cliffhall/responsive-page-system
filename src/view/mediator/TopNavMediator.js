@@ -1,10 +1,7 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class TopNavMediator
- *
  */
-
 puremvc.define({
     name : 'rps.view.mediator.TopNavMediator',
     parent : puremvc.Mediator

@@ -1,23 +1,24 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class BottomNavComponent
- *
  */
+puremvc.define(
+{
+    name        : 'rps.BottomNavComponent',
+    constructor : function( event ) {}
+},
 
-puremvc.define({
-    name : 'rps.view.component.BottomNavComponent',
-    constructor : function(event) {
-    }
-}, {
+// INSTANCE MEMBERS
+{
     signals : {
-        nextSignal : new signals.Signal(),
-        previousSignal : new signals.Signal(),
-        showPageMenuSignal : new signals.Signal(),
-        hidePageMenuSignal : new signals.Signal(),
-        backSignal : new signals.Signal(),
+        nextSignal          : new signals.Signal(),
+        previousSignal      : new signals.Signal(),
+        showPageMenuSignal  : new signals.Signal(),
+        hidePageMenuSignal  : new signals.Signal(),
+        backSignal          : new signals.Signal(),
     },
-    build : function(pageData) {
+               
+    build : function( pageData ) {
         var target = this;
         var prevlink = '<div id="previousButton" class="navButtonPrevious">&nbsp;</div>';
         var nextlink = '<div id="nextButton" class="navButtonNext">&nbsp;</div>';
@@ -33,7 +34,7 @@ puremvc.define({
             width : pageData.dimensions.width + 'px',
             color : pageData.contentConfig.navTextColor,
             lineHeight : pageData.dimensions.navHeight + 'px',
-            top : (pageData.contentConfig.orientation == rps.AppConstants.PORTRAIT_MODE) ? pageData.dimensions.height - pageData.dimensions.navHeight + 'px' : '0px'
+            top : ( pageData.contentConfig.orientation == rps.AppConstants.PORTRAIT_MODE ) ? pageData.dimensions.height - pageData.dimensions.navHeight + 'px' : '0px'
         });
 
         var numButtons = $('.bottomNav').children().length;
@@ -45,30 +46,31 @@ puremvc.define({
         // Always remove event before adding
         $(document).off(pageData.contentConfig.mainGesture, '.navButtonPrevious');
         $(document).on(pageData.contentConfig.mainGesture, '.navButtonPrevious', function(e) {
-            target.signals[rps.view.component.BottomNavComponent.SIGNAL_PREVIOUS].dispatch(rps.view.component.BottomNavComponent.SIGNAL_PREVIOUS);
+            target.signals[ rps.BottomNavComponent.SIGNAL_PREVIOUS ].dispatch( rps.BottomNavComponent.SIGNAL_PREVIOUS );
         });
 
         $(document).off(pageData.contentConfig.mainGesture, '.navButtonNext');
         $(document).on(pageData.contentConfig.mainGesture, '.navButtonNext', function(e) {
-            target.signals[rps.view.component.BottomNavComponent.SIGNAL_NEXT].dispatch(rps.view.component.BottomNavComponent.SIGNAL_NEXT);
+            target.signals[rps.BottomNavComponent.SIGNAL_NEXT].dispatch( rps.BottomNavComponent.SIGNAL_NEXT );
         });
 
         $(document).off(pageData.contentConfig.mainGesture, '.navButtonMenu');
         $(document).on(pageData.contentConfig.mainGesture, '.navButtonMenu', function(e) {
             var sig;
             if (!pageData.contentConfig.menuActivated) {
-                sig = rps.view.component.BottomNavComponent.SIGNAL_SHOW_PAGEMENU;
+                sig = rps.BottomNavComponent.SIGNAL_SHOW_PAGEMENU;
 
             } else {
-                sig = rps.view.component.BottomNavComponent.SIGNAL_HIDE_PAGEMENU;
+                sig = rps.BottomNavComponent.SIGNAL_HIDE_PAGEMENU;
             }
             target.signals[sig].dispatch(sig);
         });
         this.redraw(pageData);
     },
-    toggleMenuButtonStyle : function(pageData) {
+               
+    toggleMenuButtonStyle : function( pageData ) {
         var newCSS;
-        if (pageData.contentConfig.menuActivated) {
+        if ( pageData.contentConfig.menuActivated ) {
             newCSS = {
                 background : 'url(css/images/menu_white.png)',
                 backgroundRepeat : 'no-repeat',
@@ -85,10 +87,11 @@ puremvc.define({
         }
         $('.navButtonMenu').css(newCSS);
     },
-    redraw : function(pageData) {
+               
+    redraw : function( pageData ) {
         var numButtons = $('.bottomNav').children().length;
         
-        this.toggleMenuButtonStyle(pageData);
+        this.toggleMenuButtonStyle( pageData );
 
         $('.bottomNav').css({
             width : pageData.dimensions.width + 'px',
@@ -101,16 +104,13 @@ puremvc.define({
         });
     },
 },
+               
 // STATIC MEMBERS
 {
-    /**
-     * @static
-     * @type {string}
-     */
-    NAME : 'BottomNavComponent',
-    SIGNAL_NEXT : 'nextSignal',
-    SIGNAL_PREVIOUS : 'previousSignal',
-    SIGNAL_SHOW_PAGEMENU : 'showPageMenuSignal',
-    SIGNAL_HIDE_PAGEMENU : 'hidePageMenuSignal',
-    SIGNAL_BACK : 'backSignal',
+    NAME                    : 'BottomNavComponent',
+    SIGNAL_NEXT             : 'nextSignal',
+    SIGNAL_PREVIOUS         : 'previousSignal',
+    SIGNAL_SHOW_PAGEMENU    : 'showPageMenuSignal',
+    SIGNAL_HIDE_PAGEMENU    : 'hidePageMenuSignal',
+    SIGNAL_BACK             : 'backSignal',
 });

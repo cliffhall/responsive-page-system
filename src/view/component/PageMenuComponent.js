@@ -1,22 +1,23 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class PageMenuComponent
- *
  */
+puremvc.define(
+{
+    name : 'rps.PageMenuComponent',
+    constructor : function( event ) {}
+},
 
-puremvc.define({
-    name : 'rps.view.component.PageMenuComponent',
-    constructor : function(event) {
-        //
-    }
-}, {
+// INSTANCE MEMBERS
+{
     signals : {
         readySignal : new signals.Signal(),
         logSignal : new signals.Signal(),
         buttonClickSignal : new signals.Signal()
     },
-    build : function(pageData) {
+               
+    build : function( pageData ) {
+               
         var portraitSizePages = pageData.dimensions.height - (pageData.dimensions.topNavHeight + pageData.dimensions.navHeight) + 'px';
         var landscapeSizePages = pageData.dimensions.height - pageData.dimensions.topNavHeight + 'px';
 
@@ -42,19 +43,21 @@ puremvc.define({
 
             $(document).off(pageData.contentConfig.mainGesture, '#' + item.id + 'ContentText');
             $(document).on(pageData.contentConfig.mainGesture, '#' + item.id + 'PageMenuButton', function(event) {
-                targ.signals[rps.view.component.PageMenuComponent.SIGNAL_BUTTONCLICK].dispatch(rps.view.component.PageMenuComponent.SIGNAL_BUTTONCLICK, event.target);
+                targ.signals[rps.PageMenuComponent.SIGNAL_BUTTONCLICK].dispatch(rps.PageMenuComponent.SIGNAL_BUTTONCLICK, event.target);
                 event.preventDefault();
             });
         });
         this.redraw(pageData);
-        this.signals.readySignal.dispatch(rps.view.component.PageMenuComponent.SIGNAL_READY);
+        this.signals.readySignal.dispatch(rps.PageMenuComponent.SIGNAL_READY);
         delete pageData;
     },
+               
     /**
      * Triggered by resize of window, and other events that require a UI update
      * Needs cleanup
      */
-    redraw : function(pageData) {
+    redraw : function( pageData ) {
+               
         var isLandscapeMode = pageData.contentConfig.orientation == rps.AppConstants.LANDSCAPE_MODE;
         var pageYSize = pageData.dimensions.height;
         var pageXSize = pageData.dimensions.width;
@@ -136,7 +139,8 @@ puremvc.define({
         });
         delete pageData;
     },
-    showPageMenu : function(pageData) {
+               
+    showPageMenu : function( pageData ) {
         $('.pageMenu,.pageMenuButtons').css({
             display : 'inline',
             left : '-300px'
@@ -148,6 +152,7 @@ puremvc.define({
         });
         delete pageData;
     },
+               
     hidePageMenu : function(pageData) {
         $('.pageMenu,.pageMenuButtons').animate({
             left : '-300px'
@@ -161,12 +166,11 @@ puremvc.define({
         });
         delete pageData;
     }
-}, {
-    /**
-     * @static
-     * @type {string}
-     */
-    NAME : 'PageMenuComponent',
-    SIGNAL_READY : 'readySignal',
-    SIGNAL_BUTTONCLICK : 'buttonClickSignal'
+},
+
+// CLASS MEMBERS
+{
+    NAME                : 'PageMenuComponent',
+    SIGNAL_READY        : 'readySignal',
+    SIGNAL_BUTTONCLICK  : 'buttonClickSignal'
 });

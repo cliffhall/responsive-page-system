@@ -1,10 +1,7 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class ViewPortMediator
- *
  */
-
 puremvc.define({
     name : 'rps.view.mediator.ViewPortMediator',
     parent : puremvc.Mediator

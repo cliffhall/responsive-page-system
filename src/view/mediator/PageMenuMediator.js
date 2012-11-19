@@ -1,17 +1,20 @@
 /**
+ * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton
- *
- * @class PageMenuMediator
- *
  */
-
 puremvc.define({
-    name : 'rps.view.mediator.PageMenuMediator',
+    name : 'rps.PageMenuMediator',
     parent : puremvc.Mediator
 }, {
     /** @override */
     listNotificationInterests : function() {
-        return [rps.AppConstants.NOTE_SHOW_PAGEMENU, rps.AppConstants.NOTE_HIDE_PAGEMENU, rps.AppConstants.NOTE_PAGES_RETRIEVED, rps.AppConstants.NOTE_APP_RESIZE, rps.AppConstants.NOTE_LEFT_MENU_RETRACTED, rps.AppConstants.NOTE_LEFT_MENU_EXTENDED];
+        return [rps.AppConstants.NOTE_SHOW_PAGEMENU,
+                rps.AppConstants.NOTE_HIDE_PAGEMENU,
+                rps.AppConstants.NOTE_PAGES_RETRIEVED,
+                rps.AppConstants.NOTE_APP_RESIZE,
+                rps.AppConstants.NOTE_LEFT_MENU_RETRACTED,
+                rps.AppConstants.NOTE_LEFT_MENU_EXTENDED
+                ];
     },
     /** @override */
     onRegister : function() {
