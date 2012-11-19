@@ -8,17 +8,24 @@ puremvc.define({
 }, {
     /** @override */
     listNotificationInterests : function() {
-        return [rps.AppConstants.NOTE_PAGES_RETRIEVED, rps.AppConstants.NOTE_PAGE_CHANGED, rps.AppConstants.NOTE_APP_RESIZE, rps.AppConstants.NOTE_LOG_MESSAGE, rps.AppConstants.NOTE_SHOW_PAGEMENU, rps.AppConstants.NOTE_HIDE_PAGEMENU];
+        return [rps.AppConstants.NOTE_PAGES_RETRIEVED,
+                rps.AppConstants.NOTE_PAGE_CHANGED,
+                rps.AppConstants.NOTE_APP_RESIZE,
+                rps.AppConstants.NOTE_LOG_MESSAGE,
+                rps.AppConstants.NOTE_SHOW_PAGEMENU,
+                rps.AppConstants.NOTE_HIDE_PAGEMENU
+                ];
     },
     /** @override */
     onRegister : function() {
-        this.setViewComponent(new rps.view.component.TopNavComponent);
+        this.setViewComponent(new rps.TopNavComponent);
         this.doSignals();
     },
+               
     /** @override */
     handleNotification : function(note) {
         var view = this.getViewComponent();
-        var proxy = this.facade.retrieveProxy(rps.model.proxy.PageProxy.NAME);
+        var proxy = this.facade.retrieveProxy(rps.PageProxy.NAME);
         var pageData = proxy.getData();
         switch (note.getName()) {
             case rps.AppConstants.NOTE_APP_RESIZE:
@@ -64,22 +71,22 @@ puremvc.define({
         });
     },
     handleEvent : function(signal) {
-        var proxy = this.facade.retrieveProxy(rps.model.proxy.PageProxy.NAME);
+        var proxy = this.facade.retrieveProxy(rps.PageProxy.NAME);
         var view = this.getViewComponent();
         switch(signal) {
-            case rps.view.component.TopNavComponent.SIGNAL_HOME:
+            case rps.TopNavComponent.SIGNAL_HOME:
                 this.sendNotification(rps.AppConstants.NOTE_PAGE_CHANGE, {
                     type : rps.AppConstants.PAGE_CHANGE_HOME,
                     val : proxy.getData().items[0].id
                 });
                 break;
-            case rps.view.component.TopNavComponent.SIGNAL_BACK:
+            case rps.TopNavComponent.SIGNAL_BACK:
                 this.sendNotification(rps.AppConstants.NOTE_PAGE_CHANGE, {
                     type : rps.AppConstants.PAGE_CHANGE_BACK
                 });
                 break;
             // Hide / show left menu
-            case rps.view.component.TopNavComponent.SIGNAL_TOGGLE_MENU:
+            case rps.TopNavComponent.SIGNAL_TOGGLE_MENU:
                 
                 view.toggleLeftMenu(proxy.data);
                 this.sendNotification(rps.AppConstants.NOTE_TOGGLE_PAGEMENU, view.getLeftMenuToggled());
@@ -87,17 +94,17 @@ puremvc.define({
                 
                 break;
             // Notify app that left menu is extended
-            case rps.view.component.TopNavComponent.SIGNAL_MENU_EXTENDED:
+            case rps.TopNavComponent.SIGNAL_MENU_EXTENDED:
                 this.sendNotification(rps.AppConstants.NOTE_LEFT_MENU_EXTENDED);
                 break;
             // Notify app that left menu is retracted
-            case rps.view.component.TopNavComponent.SIGNAL_MENU_RETRACTED:
+            case rps.TopNavComponent.SIGNAL_MENU_RETRACTED:
                 this.sendNotification(rps.AppConstants.NOTE_LEFT_MENU_RETRACTED);
                 break;
-            case rps.view.component.TopNavComponent.SIGNAL_TOPNAV_HIDDEN:
+            case rps.TopNavComponent.SIGNAL_TOPNAV_HIDDEN:
                 this.sendNotification(rps.AppConstants.NOTE_TOPNAV_HIDDEN);
                 break;
-            case rps.view.component.TopNavComponent.SIGNAL_TOPNAV_SHOWN:
+            case rps.TopNavComponent.SIGNAL_TOPNAV_SHOWN:
                 this.sendNotification(rps.AppConstants.NOTE_TOPNAV_SHOWN);
                 break;
             default:
@@ -107,11 +114,8 @@ puremvc.define({
 
     }
 },
-// STATIC MEMBERS
+               
+// CLASS MEMBERS
 {
-    /**
-     * @static
-     * @type {string}
-     */
     NAME : 'TopNavMediator'
 });

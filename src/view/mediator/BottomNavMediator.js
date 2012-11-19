@@ -4,7 +4,7 @@
  */
 puremvc.define(
 {
-    name    : 'rps.view.mediator.BottomNavMediator',
+    name    : 'rps.BottomNavMediator',
     parent  : puremvc.Mediator
 },
 

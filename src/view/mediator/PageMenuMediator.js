@@ -20,7 +20,7 @@ puremvc.define({
     onRegister : function() {
 
         // Create the viewComponent
-        this.setViewComponent(new rps.view.component.PageMenuComponent);
+        this.setViewComponent(new rps.PageMenuComponent);
 
         // Establish signal listeners
         this.doSignals();
@@ -28,7 +28,7 @@ puremvc.define({
     },
     /** @override */
     handleNotification : function(note) {
-        var proxy = this.facade.retrieveProxy(rps.model.proxy.PageProxy.NAME);
+        var proxy = this.facade.retrieveProxy(rps.PageProxy.NAME);
         var view = this.getViewComponent();
         
         switch (note.getName()) {
@@ -71,10 +71,10 @@ puremvc.define({
     },
     handleEvent : function(signal, data) {
         switch(signal) {
-            case rps.view.component.PageMenuComponent.SIGNAL_READY:
+            case rps.PageMenuComponent.SIGNAL_READY:
                 //console.log('PageMenuMediator::Signal '+signal+' received');
                 break;
-            case rps.view.component.PageMenuComponent.SIGNAL_BUTTONCLICK:
+            case rps.PageMenuComponent.SIGNAL_BUTTONCLICK:
                 this.sendNotification(rps.AppConstants.NOTE_HIDE_PAGEMENU);
                 this.sendNotification(rps.AppConstants.NOTE_PAGE_CHANGE, {
                     type : rps.AppConstants.PAGE_CHANGE_TITLE,

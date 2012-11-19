@@ -2,7 +2,7 @@
  * PureMVC JS Demo: Responsive Page System
  * @author Mike Britton 
  */
-puremvc.define({ name: 'rpc.AppConstants' },{},
+puremvc.define({ name: 'rps.AppConstants' },{},
                
 // CLASS MEMBERS
 {

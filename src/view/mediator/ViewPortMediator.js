@@ -8,13 +8,16 @@ puremvc.define({
 }, {
     /** @override */
     listNotificationInterests : function() {
-        return [rps.AppConstants.NOTE_PAGES_RETRIEVED, rps.AppConstants.NOTE_APP_RESIZE, rps.AppConstants.NOTE_PAGE_CHANGED];
+        return [rps.AppConstants.NOTE_PAGES_RETRIEVED,
+                rps.AppConstants.NOTE_APP_RESIZE,
+                rps.AppConstants.NOTE_PAGE_CHANGED
+                ];
     },
     /** @override */
     onRegister : function() {
 
         // Create the viewComponent
-        this.setViewComponent(new rps.view.component.ViewPortComponent);
+        this.setViewComponent(new rps.ViewPortComponent);
 
         // Establish signal listeners
         this.doSignals();
@@ -22,7 +25,7 @@ puremvc.define({
     },
     /** @override */
     handleNotification : function(note) {
-        var proxy = this.facade.retrieveProxy(rps.model.proxy.PageProxy.NAME);
+        var proxy = this.facade.retrieveProxy(rps.PageProxy.NAME);
         var view = this.getViewComponent();
         switch (note.getName()) {
             case rps.AppConstants.NOTE_APP_RESIZE:
@@ -36,7 +39,7 @@ puremvc.define({
                 view.build(note.getBody());
                 break;
             case rps.AppConstants.NOTE_PAGE_CHANGED:
-                view.gotoPage(note.getBody(), this.facade.retrieveProxy(rps.model.proxy.PageProxy.NAME).getData());
+                view.gotoPage(note.getBody(), this.facade.retrieveProxy(rps.PageProxy.NAME).getData());
                 break;
             default:
                 console.log('ViewPortMediator received unsupported Notification');
@@ -54,11 +57,11 @@ puremvc.define({
     },
     handleEvent : function(signal, data) {
         switch(signal) {
-            case rps.view.component.ViewPortComponent.SIGNAL_LOG:
+            case rps.ViewPortComponent.SIGNAL_LOG:
                 console.dir(data);
                 this.facade.sendNotification(rps.AppConstants.NOTE_LOG_MESSAGE, data);
                 break;
-            case rps.view.component.ViewPortComponent.SIGNAL_READY:
+            case rps.ViewPortComponent.SIGNAL_READY:
                 //console.log('ViewPortMediator::Signal '+signal+' received');
                 break;
             default:
@@ -68,11 +71,8 @@ puremvc.define({
 
     }
 },
-// STATIC MEMBERS
+
+// CLASS MEMBERS
 {
-    /**
-     * @static
-     * @type {string}
-     */
     NAME : 'ViewPortMediator'
 });
